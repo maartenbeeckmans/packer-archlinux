@@ -12,7 +12,7 @@ pacman --sync --refresh --refresh
 
 ./partition.sh "${DEVICE}"
 
-pacstrap /mnt base linux-lts
+pacstrap /mnt base linux linux-lts
 
 # Generate an fstab file with UUID
 genfstab -t UUID /mnt >> /mnt/etc/fstab
