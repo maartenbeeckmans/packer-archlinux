@@ -34,38 +34,38 @@ sleep 2
 
 umount -lAR /mnt
 
-mount --types btrfs                                 \
-  --options compress=lzo,noatime,defaults,nodatacow \
+mount --types btrfs \
+  --options defaults,compress=zstd,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt
 mount --types vfat \
-  --mkdir          \
+  --mkdir \
   "${efi_partition}" /mnt/efi
-mount --types btrfs                                             \
-  --mkdir                                                       \
-  --options subvol=home,compress=lzo,noatime,defaults,nodatacow \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=home,compress=zstd,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt/home
-mount --types btrfs                                                  \
-  --mkdir                                                            \
-  --options subvol=var,compress=lzo,noatime,defaults,nodatacow,nodev \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=var,compress=zstd,noatime,autodefrag,datacow,datasum,nodev \
   "${btrfs_partition}" /mnt/var
-mount --types btrfs                                                \
-  --mkdir                                                          \
-  --options subvol=var/log,compress=lzo,noatime,defaults,nodatacow \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=var/log,compress=zstd,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt/var/log
-mount --types btrfs                                                      \
-  --mkdir                                                                \
-  --options subvol=var/log/audit,compress=lzo,noatime,defaults,nodatacow \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=var/log/audit,compress=zstd,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt/var/log/audit
-mount --types btrfs                                                              \
-  --mkdir                                                                        \
-  --options subvol=var/tmp,compress=lzo,defaults,rw,nosuid,nodev,noexec,relatime \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=var/tmp,compress=zstd,rw,nosuid,nodev,noexec,relatime \
   "${btrfs_partition}" /mnt/var/tmp
-mount --types btrfs                                                          \
-  --mkdir                                                                    \
-  --options subvol=tmp,compress=lzo,defaults,rw,nosuid,nodev,noexec,relatime \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=tmp,compress=zstd,rw,nosuid,nodev,noexec,relatime \
   "${btrfs_partition}" /mnt/tmp
-mount --types btrfs                                             \
-  --mkdir                                                       \
-  --options subvol=swap,compress=lzo,noatime,defaults,nodatacow \
+mount --types btrfs \
+  --mkdir \
+  --options defaults,subvol=swap,compress=no,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt/swap
 swapon /mnt/swap/swapfile
