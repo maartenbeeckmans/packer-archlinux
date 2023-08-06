@@ -10,7 +10,7 @@ echo 'archlinux' > /etc/hostname
 
 pacman --sync --noconfirm btrfs-progs
 
-pacman --sync --noconfirm vim tree curl httpie wget htop iftop iotop tmux inetutils tar sed net-tools the_silver_searcher bind
+pacman --sync --noconfirm vim tree curl httpie wget htop iftop iotop tmux inetutils tar sed net-tools the_silver_searcher bind bash-completion
 
 sed -i -e "s/.*ParallelDownloads.*/ParallelDownloads = 10/g" /etc/pacman.conf
 sed -i -e "s/.*Color.*/Color/g" /etc/pacman.conf
