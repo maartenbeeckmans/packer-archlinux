@@ -1,0 +1,3 @@
+[submodule "provisioning/roles/base"]
+	path = provisioning/roles/base
+	url = git@git.beeckmans.cloud:homelab/ansible/roles/base.git

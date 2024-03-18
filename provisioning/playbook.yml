@@ -1,0 +1,39 @@
+---
+# playbook.yml
+- name: 'Provision Image'
+  hosts: default
+  become: true
+  tasks:
+    - name: Pass variables to role
+      ansible.builtin.include_role:
+        name: roles/base
+      vars:
+        hostname: 'archlinux-packer.beeckmans.io'
+        uid_ansible: 900
+        uid_maartenb: 1000
+        gid_ansible: 900
+        gid_maartenb: 1000
+        gid_ssh: 1001
+        gid_wheel: 1002
+        common_groups:
+          - state: present
+            name: maartenb
+        common_users:
+          - state: present
+            name: maartenb
+            comment: Maarten Beeckmans
+            group: maartenb
+            groups:
+              - wheel
+              - ssh
+        password_hash_root: $6$zKndW6AxqeLdb8hW$ZQ4VkxpbGwsC8uBQrrPE9VrjggQYg6y6vPf1e5iVJTcCAkv0mRRXd9SY3vET4vL2OHueTL/372bmKgUEw5aCU.
+        password_hash_maartenb: $6$zKndW6AxqeLdb8hW$ZQ4VkxpbGwsC8uBQrrPE9VrjggQYg6y6vPf1e5iVJTcCAkv0mRRXd9SY3vET4vL2OHueTL/372bmKgUEw5aCU.
+        ssh_key_ansible: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpV+FTBwdcwaM1It2j58WHj+XN7Brl0YsK2NvCeQy0q maartenbeeckmans@Maartens-MacBook-Pro.local'
+        ssh_key_maartenb: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpV+FTBwdcwaM1It2j58WHj+XN7Brl0YsK2NvCeQy0q maartenbeeckmans@Maartens-MacBook-Pro.local'
+    - name: Ensure base packages are installed
+      community.general.pacman:
+        name:
+          - cloud-init
+          - cloud-guest-utils
+        state: present
+...

@@ -55,10 +55,10 @@ variable "proxmox_password" {
 }
 
 source "proxmox-iso" "archlinux" {
-  iso_checksum = "${var.iso_checksum}"
-  iso_url      = "${var.iso_url}"
+  iso_checksum     = "${var.iso_checksum}"
+  iso_url          = "${var.iso_url}"
   iso_storage_pool = "local"
-  unmount_iso  = true
+  unmount_iso      = true
 
   proxmox_url              = "${var.proxmox_url}"
   insecure_skip_tls_verify = true
@@ -116,4 +116,8 @@ build {
   sources = [
     "source.proxmox-iso.archlinux"
   ]
+  provisioner "ansible" {
+    playbook_file   = "provisioning/playbook.yml"
+    extra_arguments = ["--scp-extra-args", "'-O'"]
+  }
 }
