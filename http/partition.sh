@@ -9,9 +9,9 @@ btrfs_partition="${DEVICE}2"
 
 # Partition efi
 parted "${DEVICE}" --script mklabel gpt
-parted "${DEVICE}" --script --align=optimal mkpart ESP fat32 1MiB 512MiB
-parted "${DEVICE}" --script set 1 boot on
-parted "${DEVICE}" --script --align=optimal mkpart primary btrfs 10GiB 100%
+parted "${DEVICE}" --script --align=opt mkpart primary fat32 1MiB 1GiB
+parted "${DEVICE}" --script set 1 esp on
+parted "${DEVICE}" --script --align=opt mkpart primary btrfs 1GiB 100%
 
 mkfs.fat -F 32 "${efi_partition}"
 mkfs.btrfs -L 'root' "${btrfs_partition}"
@@ -25,8 +25,6 @@ btrfs subvolume create /mnt/home
 btrfs subvolume create /mnt/var
 btrfs subvolume create /mnt/var/log
 btrfs subvolume create /mnt/var/log/audit
-btrfs subvolume create /mnt/var/tmp
-btrfs subvolume create /mnt/tmp
 btrfs subvolume create /mnt/swap
 btrfs filesystem mkswapfile --size 1G --uuid clear /mnt/swap/swapfile
 
@@ -39,7 +37,7 @@ mount --types btrfs \
   "${btrfs_partition}" /mnt
 mount --types vfat \
   --mkdir \
-  "${efi_partition}" /mnt/efi
+  "${efi_partition}" /mnt/boot
 mount --types btrfs \
   --mkdir \
   --options defaults,subvol=home,compress=zstd,noatime,autodefrag,datacow,datasum \
@@ -56,14 +54,6 @@ mount --types btrfs \
   --mkdir \
   --options defaults,subvol=var/log/audit,compress=zstd,noatime,autodefrag,datacow,datasum \
   "${btrfs_partition}" /mnt/var/log/audit
-mount --types btrfs \
-  --mkdir \
-  --options defaults,subvol=var/tmp,compress=zstd,rw,nosuid,nodev,noexec,relatime \
-  "${btrfs_partition}" /mnt/var/tmp
-mount --types btrfs \
-  --mkdir \
-  --options defaults,subvol=tmp,compress=zstd,rw,nosuid,nodev,noexec,relatime \
-  "${btrfs_partition}" /mnt/tmp
 mount --types btrfs \
   --mkdir \
   --options defaults,subvol=swap,compress=no,noatime,autodefrag,datacow,datasum \

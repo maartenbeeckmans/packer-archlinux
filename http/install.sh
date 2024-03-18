@@ -12,26 +12,18 @@ pacman --sync --refresh --refresh
 
 ./partition.sh "${DEVICE}"
 
-pacstrap /mnt base linux linux-lts
+pacstrap /mnt base linux-lts
 
 # Generate an fstab file with UUID
 genfstab -t UUID /mnt >> /mnt/etc/fstab
 
-cp chroot.sh /mnt/
-arch-chroot /mnt /chroot.sh
-rm /mnt/chroot.sh
+mv install-chroot.sh /mnt
+arch-chroot /mnt /install-chroot.sh | tee /mnt/var/log/packer-install.log
+rm -v /mnt/install-chroot.sh
 
-cp efistub.sh /mnt/
-arch-chroot /mnt /efistub.sh
-rm /mnt/efistub.sh
-
-cp network.sh /mnt/
-arch-chroot /mnt /network.sh
-rm /mnt/network.sh
-
-cp packer.sh /mnt/
-arch-chroot /mnt /packer.sh
-rm /mnt/packer.sh
+mv packer.sh /mnt
+arch-chroot /mnt /packer.sh | tee /mnt/var/log/packer-install.log
+rm -v /mnt/packer.sh
 
 swapoff -a
 umount -R /mnt
