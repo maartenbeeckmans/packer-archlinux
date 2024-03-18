@@ -1,2 +1,3 @@
 packer_builds/*
 packer_cache/*
+secret.debian.pkrvars.hcl

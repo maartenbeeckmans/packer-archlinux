@@ -27,7 +27,7 @@ variable "memory" {
 
 variable "disk_size" {
   type    = string
-  default = "30G"
+  default = "32G"
 }
 
 variable "headless" {
@@ -50,9 +50,7 @@ source "qemu" "archlinux" {
     "<enter><wait>",
     "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.sh<enter><wait>",
     "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/partition.sh<enter><wait>",
-    "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/chroot.sh<enter><wait>",
-    "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/efistub.sh<enter><wait>",
-    "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/network.sh<enter><wait>",
+    "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/install-chroot.sh<enter><wait>",
     "curl -sfSLO http://{{ .HTTPIP }}:{{ .HTTPPort }}/packer.sh<enter><wait>",
     "chmod +x *.sh<enter>",
     "./install.sh<enter>"
