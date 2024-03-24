@@ -1,18 +1,9 @@
 locals {
-  image_full_name = "${var.image_name}-${var.image_version}.${var.image_format}"
+  image_full_name = "${var.image_name}-${formatdate("YYMMDD", timestamp())}"
 }
 
 variable "image_name" {
   type = string
-}
-
-variable "image_version" {
-  type = string
-}
-
-variable "image_format" {
-  type    = string
-  default = "qcow2"
 }
 
 variable "cpus" {
@@ -71,6 +62,7 @@ source "proxmox-iso" "archlinux" {
   cores  = "${var.cpus}"
   memory = "${var.memory}"
   os     = "l26"
+  machine = "q35"
 
   disks {
     disk_size    = "${var.disk_size}"
@@ -87,6 +79,7 @@ source "proxmox-iso" "archlinux" {
   ssh_username = "root"
   ssh_password = "secret"
 
+  vm_id                = "1000"
   template_description = "${local.image_full_name}, generated on ${timestamp()}"
   template_name        = "${local.image_full_name}"
 
@@ -118,6 +111,6 @@ build {
   ]
   provisioner "ansible" {
     playbook_file   = "provisioning/playbook.yml"
-    extra_arguments = ["--scp-extra-args", "'-O'"]
+    extra_arguments = ["--scp-extra-args", "'-O'", "--skip-tags", "ansible_skip_handlers"]
   }
 }
