@@ -8,7 +8,7 @@
       ansible.builtin.include_role:
         name: roles/base
       vars:
-        hostname: 'archlinux-packer.beeckmans.io'
+        hostname: 'archiso'
         uid_ansible: 900
         uid_maartenb: 1000
         gid_ansible: 900
@@ -36,4 +36,10 @@
           - cloud-init
           - cloud-guest-utils
         state: present
+    - name: Run cloud-init clean
+      ansible.builtin.command: /usr/bin/cloud-init clean --logs --machine-id --seed --configs all
+    - name: Enable cloud-init on next boot
+      ansible.builtin.systemd_service:
+        name: cloud-init.service
+        enabled: true
 ...
