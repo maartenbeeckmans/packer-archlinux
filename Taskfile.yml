@@ -1,0 +1,17 @@
+---
+version: 3
+
+env:
+  VARFILE: archlinux.auto.pkrvars.hcl
+  SECRET_VARFILE: secret.archlinux.pkrvars.hcl
+
+tasks:
+  init:
+    cmds:
+      - packer init plugins.archlinux.pkr.hcl 
+  validate:
+    cmds:
+      - packer validate -var-file "${VARFILE}" -var-file "${SECRET_VARFILE}" build-proxmox.archlinux.pkr.hcl
+  build:
+    cmds:
+      - packer build -timestamp-ui -var-file "${VARFILE}" -var-file "${SECRET_VARFILE}" build-proxmox.archlinux.pkr.hcl

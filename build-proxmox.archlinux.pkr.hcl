@@ -3,7 +3,8 @@ locals {
 }
 
 variable "image_name" {
-  type = string
+  type    = string
+  default = "archlinux"
 }
 
 variable "cpus" {

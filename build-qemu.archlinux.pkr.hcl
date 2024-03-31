@@ -1,18 +1,10 @@
 locals {
-  image_full_name = "${var.image_name}-${var.image_version}.${var.image_format}"
+  image_full_name = "${var.image_name}-${formatdate("YYMMDD", timestamp())}.qcow2"
 }
 
 variable "image_name" {
-  type = string
-}
-
-variable "image_version" {
-  type = string
-}
-
-variable "image_format" {
   type    = string
-  default = "qcow2"
+  default = "archlinux"
 }
 
 variable "cpus" {
@@ -71,7 +63,7 @@ source "qemu" "archlinux" {
   ssh_password      = "secret"
   vm_name           = "${local.image_full_name}"
   accelerator       = "kvm"
-  format            = "${var.image_format}"
+  format            = "qcow2"
   efi_boot          = true
   efi_firmware_code = "/usr/share/OVMF/x64/OVMF_CODE.fd"
   efi_firmware_vars = "/usr/share/OVMF/x64/OVMF_VARS.fd"
